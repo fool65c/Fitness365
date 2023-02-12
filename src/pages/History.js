@@ -2,7 +2,7 @@ import * as React from 'react';
 import { SafeAreaView, Pressable, View } from 'react-native';
 import { List , Surface, Text, ProgressBar } from 'react-native-paper';
 
-const Log = () => {
+const History = () => {
     
     const meals = {
         [new Date()]: {
@@ -61,4 +61,4 @@ const Log = () => {
   );
 };
 
-export default Log;
+export default History;

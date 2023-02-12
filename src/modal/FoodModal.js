@@ -1,11 +1,18 @@
 import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { View } from 'react-native'
-import { Modal, Text, TextInput, Button } from 'react-native-paper';
+import { 
+    Modal, 
+    Text, 
+    TextInput, 
+    Button 
+} from 'react-native-paper';
 
 import { hideFoodModal } from '../store/modal/actions';
 import { emptyFood } from '../store/food/reducer';
 import { deleteFood, updateFood } from '../store/food/actions';
+
+import {Picker} from '@react-native-picker/picker';
 
 const FoodModal = () => {
 
@@ -32,7 +39,7 @@ const FoodModal = () => {
 
     React.useEffect(() => {
         if (foodID) {
-            console.log('HERE', foods[foodID])
+            console.log('HERE', foods[foodID].protine)
             updateTempFood(foods[foodID])
         }
     }, [foodID])
@@ -243,7 +250,7 @@ const FoodModal = () => {
                     inputmode='text'
                     label='Units'
                     placeholder='G'
-                    value={food.protine.units.toString()}
+                    value={food.protine.unit}
                     style={{
                         marginRight: 10,
                         marginLeft: 15,

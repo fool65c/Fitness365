@@ -1,3 +1,5 @@
+import uuid from 'react-native-uuid';
+
 import { 
     UPDATE_FOOD,
     DELETE_FOOD,
@@ -38,7 +40,7 @@ function foodReducer (state = initialState, action) {
             if ('id' in action.payload) {
                 state.foods[action.payload.id] = action.payload;
             } else {
-                action.payload.id = generateFoodID(action.payload.brandName + action.payload.name);
+                action.payload.id = generateFoodID();
                 state.foods[action.payload.id] = action.payload;
             }
             
@@ -55,12 +57,8 @@ function foodReducer (state = initialState, action) {
     }
   }
 
-export const generateFoodID = (string) => {
-    var h = 0, l = string.length, i = 0;
-    if ( l > 0 )
-        while (i < l)
-            h = (h << 5) - h + string.charCodeAt(i++) | 0;
-        return h;
-    } 
+export const generateFoodID = () => {
+    return uuid.v4();
+}
   
 export default foodReducer;

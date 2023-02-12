@@ -3,7 +3,7 @@ import { SafeAreaView, View, FlatList } from "react-native"
 import { TextInput, IconButton} from "react-native-paper"
 import { useDispatch, useSelector } from "react-redux"
 import FoodDisplay from "../components/FoodDisplay"
-import { showFoodModal } from "../store/modal/actions"
+import { showFoodModal, showFoodSearchModal } from "../store/modal/actions"
 
 const Pantry = () => {
 
@@ -28,7 +28,7 @@ const Pantry = () => {
                     label='Filter'
                     onChangeText={updateFilterTerm}
                 />
-                <IconButton icon='cloud-search-outline' onPress={() => dispatch(showFoodModal())}/>
+                <IconButton icon='cloud-search-outline' onPress={() => dispatch(showFoodSearchModal())}/>
                 <IconButton icon='cart-plus' onPress={() => dispatch(showFoodModal())}/>
                 </View>
             <FlatList
