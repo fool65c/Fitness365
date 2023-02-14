@@ -22,7 +22,7 @@ const FoodDisplay = (props) => {
                             <Text variant='bodyMedium'>{food.servingSize.units}</Text>
                             <Text variant='bodyMedium'> </Text>
                             <Text variant='bodyMedium'>{food.calories ? Math.ceil(food.calories.value) : 0}</Text>
-                            <Text variant='bodyMedium'>{food.calories ? food.calories.unit : 'KCAL'}</Text>
+                            <Text variant='bodyMedium'>{food.calories ? food.calories.units : 'KCAL'}</Text>
                             <Text variant='bodyMedium'> P:</Text>
                             <Text variant='bodyMedium'>{food.protine ? Math.ceil(food.protine.value) : 0}</Text>
                             <Text variant='bodyMedium'>{food.protine ? food.protine.unit : 'G'}</Text>
