@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView, View, FlatList } from "react-native";
-import { TextInput, IconButton, Dialog, Button, Text, HelperText} from "react-native-paper";
+import { TextInput, IconButton, Dialog, Button, Text } from "react-native-paper";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import FoodDisplay from "../components/FoodDisplay";
 import { showFoodModal, showFoodSearchModal } from "../store/modal/actions";
 import { emptyFood } from "../store/food/reducer";
+import { logFood } from "../store/log/actions";
 
 const Pantry = () => {
 
@@ -159,7 +160,15 @@ const Pantry = () => {
                     </View>
                 </Dialog.Content>
                 <Dialog.Actions>
-                    <Button onPress={hideDialog}>Log</Button>
+                    <Button onPress={() => {
+                        console.log(foodServings)
+                        dispatch(logFood(
+                            logDate.toLocaleString().split(',')[0],
+                            dialogFood,
+                            parseFloat(foodServings)
+                            ));
+                        hideDialog();
+                    }}>Log</Button>
                     <Button onPress={hideDialog}>Done</Button>
                 </Dialog.Actions>
             </Dialog>      

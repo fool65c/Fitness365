@@ -6,6 +6,7 @@ import Pantry from './pages/Pantry';
 import History from './pages/History';
 import FoodModal from './modal/FoodModal';
 import FoodSearchModal from './modal/FoodSearchModal';
+import LogDetialModal from './modal/LogDetailModal';
 
 const MusicRoute = () => <Text>Music</Text>;
 
@@ -14,6 +15,7 @@ const HistoryRoute = () => <History />;
 const pantryRoute = () => <Pantry />;
 
 const settingsRoute = () => <Settings />;
+
 
 const App = () => {
   const [index, setIndex] = React.useState(0);
@@ -43,6 +45,8 @@ const App = () => {
         <FoodModal />
 
         <FoodSearchModal />
+
+        <LogDetialModal />
     </>
   );
 };

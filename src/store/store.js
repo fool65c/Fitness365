@@ -8,11 +8,13 @@ import { persistReducer, persistStore } from 'redux-persist';
 import foodReducer from './food/reducer';
 import settingReducer from './settings/reducer';
 import modalReducer from './modal/reducer';
+import logReducer from './log/reducer';
 
 const rootReducer = combineReducers({
     foodReducer,
     settingReducer,
     modalReducer,
+    logReducer,
 })
 
 const persistConfig = {

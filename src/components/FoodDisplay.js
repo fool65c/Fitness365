@@ -21,17 +21,41 @@ const FoodDisplay = (props) => {
                             <Text variant='bodyMedium'>{food.servingSize.value}</Text>
                             <Text variant='bodyMedium'>{food.servingSize.units}</Text>
                             <Text variant='bodyMedium'> </Text>
-                            <Text variant='bodyMedium'>{food.calories ? Math.ceil(food.calories.value) : 0}</Text>
-                            <Text variant='bodyMedium'>{food.calories ? food.calories.units : 'KCAL'}</Text>
+                            <Text variant='bodyMedium'>
+                                {
+                                    food.servings ? 
+                                    Math.ceil(food.servings * food.calories.value) :
+                                    Math.ceil(food.calories.value)
+                                }
+                            </Text>
+                            <Text variant='bodyMedium'>{food.calories.units}</Text>
                             <Text variant='bodyMedium'> P:</Text>
-                            <Text variant='bodyMedium'>{food.protine ? Math.ceil(food.protine.value) : 0}</Text>
-                            <Text variant='bodyMedium'>{food.protine ? food.protine.unit : 'G'}</Text>
+                            <Text variant='bodyMedium'>
+                                {
+                                    food.servings ? 
+                                    Math.ceil(food.servings * food.protine.value) :
+                                    Math.ceil(food.protine.value)
+                                }
+                            </Text>
+                            <Text variant='bodyMedium'>{food.protine.unit}</Text>
                             <Text variant='bodyMedium'> C:</Text>
-                            <Text variant='bodyMedium'>{food.carbs ? Math.ceil(food.carbs.value) : 0}</Text>
-                            <Text variant='bodyMedium'>{food.carbs ? food.carbs.unit : 'G'}</Text>
+                            <Text variant='bodyMedium'>
+                                {
+                                    food.servings ? 
+                                    Math.ceil(food.servings * food.carbs.value) : 
+                                    Math.ceil(food.carbs.value) 
+                                }
+                            </Text>
+                            <Text variant='bodyMedium'>{food.carbs.unit}</Text>
                             <Text variant='bodyMedium'> F:</Text>
-                            <Text variant='bodyMedium'>{food.fat ? Math.ceil(food.fat.value) : 0}</Text>
-                            <Text variant='bodyMedium'>{food.fat ? food.fat.unit : 'G'}</Text>
+                            <Text variant='bodyMedium'>
+                                {
+                                    food.servings ?
+                                    Math.ceil(food.servings * food.fat.value) :
+                                    Math.ceil(food.fat.value)
+                                }
+                            </Text>
+                            <Text variant='bodyMedium'>{food.fat.unit}</Text>
                         </View>
                     </View>
                     <View flexDirection='column' style={{ alignSelf: "flex-end" }}>
