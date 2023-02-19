@@ -5,7 +5,6 @@ const FoodDisplay = (props) => {
     const food = props.food
     const buttonAction = props.buttonAction ? props.buttonAction : null;
     const displayAction = props.displayAction ? props.displayAction : null;
-
     return (
         <Pressable onPress={displayAction}>
             <Surface  
@@ -14,7 +13,7 @@ const FoodDisplay = (props) => {
             >
                 <View flexDirection='row' style={{justifyContent: 'space-between'}}>
                     <View flexDirection='column' style={{alignSelf:'center', marginLeft:5}}>
-                        <Text variant='labelLarge'>{food.name.length > 46 ? food.name.substr(0, 45) + '\u2026' : food.name}</Text>
+                        <Text variant='labelLarge'>{food.name && food.name.length > 46 ? food.name.substr(0, 45) + '\u2026' : food.name}</Text>
                         <Text variant='bodyMedium'>{food.brandName}</Text>
                         <View flexDirection='row'>
                             <Text variant='bodyMedium'>Serving:</Text>

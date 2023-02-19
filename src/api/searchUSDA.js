@@ -97,13 +97,18 @@ const formatFoodInputs = (foods) => {
         if (! servingInfo) {
             return false;
         }
+
         return {
             id: generateFoodID(),
-            name: food.lowercaseDescription,
+            name: food.description,
             brandName: food.brandName ? food.brandName : 'Generic',
             servingSize: {
                 value: servingInfo.servingSize,
                 units: servingInfo.servingSizeUnit.toUpperCase()
+            },
+            calories: {
+                value: 0,
+                units: 'KCAL'
             },
             protine: {
                 value: 0,

@@ -9,17 +9,19 @@ import foodReducer from './food/reducer';
 import settingReducer from './settings/reducer';
 import modalReducer from './modal/reducer';
 import logReducer from './log/reducer';
+import mealReducer from './meals/reducer';
 
 const rootReducer = combineReducers({
     foodReducer,
     settingReducer,
     modalReducer,
     logReducer,
+    mealReducer,
 })
 
 const persistConfig = {
     key: 'root',
-    blacklist: ['modal'],
+    blacklist: ['modal', modalReducer],
     storage: AsyncStorage
 };
 

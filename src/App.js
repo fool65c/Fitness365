@@ -4,11 +4,13 @@ import { BottomNavigation, Text } from 'react-native-paper';
 import Settings from './pages/Settings';
 import Pantry from './pages/Pantry';
 import History from './pages/History';
+import Meals from './pages/Meals';
 import FoodModal from './modal/FoodModal';
 import FoodSearchModal from './modal/FoodSearchModal';
 import LogDetialModal from './modal/LogDetailModal';
 
 const MusicRoute = () => <Text>Music</Text>;
+const mealsRoute = () => <Meals />;
 
 const HistoryRoute = () => <History />;
 
@@ -22,6 +24,7 @@ const App = () => {
   const [routes] = React.useState([
     { key: 'music', title: 'Home', focusedIcon: 'heart', unfocusedIcon: 'heart-outline'},
     { key: 'history', title: 'History', focusedIcon: 'book-open', unfocusedIcon:'book-outline' },
+    { key: 'meals', title: 'Meals', focusedIcon: 'bowl-mix', unfocusedIcon: 'bowl-mix-outline' },
     { key: 'pantry', title: 'Pantry', focusedIcon: 'food-apple', unfocusedIcon: 'food-apple-outline' },
     { key: 'settings', title: 'Settings', focusedIcon: 'cog', unfocusedIcon: 'cog-outline' },
   ]);
@@ -29,6 +32,7 @@ const App = () => {
   const renderScene = BottomNavigation.SceneMap({
     music: MusicRoute,
     history: HistoryRoute,
+    meals: mealsRoute,
     pantry: pantryRoute,
     settings: settingsRoute,
   });
