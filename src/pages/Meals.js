@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SafeAreaView, View, FlatList } from "react-native";
-import { TextInput, IconButton, Dialog, Button, Text } from "react-native-paper";
+import { TextInput, Button, Dialog, IconButton, Text } from "react-native-paper";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import FoodDisplay from "../components/FoodDisplay";
-import { showFoodModal, showFoodSearchModal } from "../store/modal/actions";
+import { showFoodModal } from "../store/modal/actions";
 import { emptyFood } from "../store/food/reducer";
 import { logFood } from "../store/log/actions";
 
-const Meals = () => {
+const Meals = ({props}) => {
 
     const dispatch = useDispatch();
     const { meals } = useSelector(state => state.mealReducer);
@@ -40,7 +40,6 @@ const Meals = () => {
     }
 
     const openAddDialog = (food) => {
-        console.log('buttonAction', food)
         updateDialogFood(food);
         updateFoodServings(1);
         updateFoodAmount(food.servingSize.value);
@@ -48,7 +47,6 @@ const Meals = () => {
     }
 
     const openEditModal = (foodId) => {
-        console.log('openEditModal', foodId)
         dispatch(showFoodModal(foodId))
     }
 
@@ -62,7 +60,6 @@ const Meals = () => {
             if (value.toString().split('.')[1].length > 2) {
                 return value.toFixed(2);
             } else {
-                console.log(value)
                 return value.toString();
             }
          }
@@ -78,8 +75,13 @@ const Meals = () => {
                         label='Filter'
                         onChangeText={updateFilterTerm}
                     />
-                    <IconButton icon='plus-circle-outline' style={{ alignSelf: "flex-end" }} onPress={() => dispatch(showFoodModal())}/>
-                    <IconButton icon='plus-circle-outline' style={{ alignSelf: "flex-end" }} onPress={() => dispatch(showFoodModal())}/>
+                    <Button 
+                        icon='plus-circle-outline' 
+                        style={{ alignSelf: "flex-end" }} 
+                        onPress={() => props.navigation.navigate('CreateMeal')}
+                    >
+                        Add
+                    </Button>
                 </View>
                 <FlatList
                     data={Object.values(foods).filter(food => {
@@ -162,7 +164,6 @@ const Meals = () => {
                 </Dialog.Content>
                 <Dialog.Actions>
                     <Button onPress={() => {
-                        console.log(foodServings)
                         dispatch(logFood(
                             logDate.toLocaleString().split(',')[0],
                             dialogFood,

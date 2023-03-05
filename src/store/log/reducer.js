@@ -32,7 +32,6 @@ const getDailySummary = (day) => {
     }
 
     Object.values(day.foods).forEach(food => {
-        console.log('here we go again', summary.protine, food, food.summary.proine)
         summary.calories += food.summary.calories;
         summary.protine += food.summary.protine;
         summary.carbs += food.summary.carbs;

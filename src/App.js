@@ -1,57 +1,38 @@
 import * as React from 'react';
-import { BottomNavigation, Text } from 'react-native-paper';
+import 'react-native-gesture-handler';
 
-import Settings from './pages/Settings';
-import Pantry from './pages/Pantry';
-import History from './pages/History';
-import Meals from './pages/Meals';
-import FoodModal from './modal/FoodModal';
-import FoodSearchModal from './modal/FoodSearchModal';
-import LogDetialModal from './modal/LogDetailModal';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const MusicRoute = () => <Text>Music</Text>;
-const mealsRoute = () => <Meals />;
+import Main from './pages/Main';
+import FoodSearch from './pages/FoodSearch';
+import CreateMeal from './pages/CreateMeal';
 
-const HistoryRoute = () => <History />;
-
-const pantryRoute = () => <Pantry />;
-
-const settingsRoute = () => <Settings />;
-
+const Stack = createStackNavigator();
 
 const App = () => {
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'music', title: 'Home', focusedIcon: 'heart', unfocusedIcon: 'heart-outline'},
-    { key: 'history', title: 'History', focusedIcon: 'book-open', unfocusedIcon:'book-outline' },
-    { key: 'meals', title: 'Meals', focusedIcon: 'bowl-mix', unfocusedIcon: 'bowl-mix-outline' },
-    { key: 'pantry', title: 'Pantry', focusedIcon: 'food-apple', unfocusedIcon: 'food-apple-outline' },
-    { key: 'settings', title: 'Settings', focusedIcon: 'cog', unfocusedIcon: 'cog-outline' },
-  ]);
-
-  const renderScene = BottomNavigation.SceneMap({
-    music: MusicRoute,
-    history: HistoryRoute,
-    meals: mealsRoute,
-    pantry: pantryRoute,
-    settings: settingsRoute,
-  });
 
   return (
-    <>
-        <BottomNavigation
-            navigationState={{ index, routes }}
-            onIndexChange={setIndex}
-            renderScene={renderScene}
-            compact={true}
-        />
-
-        <FoodModal />
-
-        <FoodSearchModal />
-
-        <LogDetialModal />
-    </>
+    <NavigationContainer>
+        <Stack.Navigator
+            screenOptions={{
+                headerShown: false
+            }}
+        >
+            <Stack.Screen
+                name="Main"
+                component={Main}
+            />
+            <Stack.Screen
+                name="FoodSearch"
+                component={FoodSearch}
+            />
+            <Stack.Screen
+                name="CreateMeal"
+                component={CreateMeal}
+            />
+        </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

@@ -39,8 +39,7 @@ const FoodModal = () => {
 
     React.useEffect(() => {
         if (foodID) {
-            console.log('HERE', foods[foodID].protine)
-            updateTempFood(foods[foodID])
+            updateTempFood(foods[foodID]);
         }
     }, [foodID])
 
@@ -170,7 +169,6 @@ const FoodModal = () => {
                     value={food.servingSize.units}
                     error={servingSizeUnitError}
                     onChangeText={(ssu) => {
-                        console.log(food, ssu)
                         updateTempFood({
                             ...food,
                             servingSize: {
