@@ -23,6 +23,7 @@ const History = () => {
                 <FlatList 
                     data={Object.values(log)}
                     renderItem={({item}) => {
+                        console.log(item)
                         return <LogSummary day={item} action={() => summaryClick(item)}/>  
                     }}
                 />

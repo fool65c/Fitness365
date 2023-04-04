@@ -8,9 +8,9 @@ export const updateMeal = (meal) => dispatch => {
     })
   }
   
-  export const deleteFood = (meal) => dispatch => {
+  export const deleteMeal = (mealId) => dispatch => {
     dispatch({
       type: DELETE_MEAL,
-      payload: meal
+      payload: mealId
     })
   }

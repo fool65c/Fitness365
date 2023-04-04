@@ -50,13 +50,16 @@ const MealEditDialog = (props) => {
                     <View flexDirection='row'>
                         <FloatInput 
                             label='Protine'
-                            value={props.mealSummary.summary.protine}
+                            value={props.mealSummary.protine.value}
                             onChangeText={(p) => {
                                 props.updateFunction({
                                     ...props.mealSummary,
                                     summary: {
                                         ...props.mealSummary.summary,
-                                        protine: p
+                                        protine: {
+                                            ...props.mealSummary.protine,
+                                            value: p,
+                                        }
                                     }
                                 })
                             }}
@@ -75,13 +78,16 @@ const MealEditDialog = (props) => {
                     <View flexDirection='row'>
                         <FloatInput 
                             label='Carbs'
-                            value={props.mealSummary.summary.carbs}
+                            value={props.mealSummary.carbs.value}
                             onChangeText={(c) => {
                                 props.updateFunction({
                                     ...props.mealSummary,
                                     summary: {
-                                        ...props.mealSummary.summary,
-                                        carbs: c
+                                        ...props.mealSummary,
+                                        carbs: {
+                                            ...props.mealSummary.carbs,
+                                            value: c
+                                        }
                                     }
                                 })
                             }}
@@ -100,13 +106,16 @@ const MealEditDialog = (props) => {
                     <View flexDirection='row'>
                         <FloatInput 
                             label='Fat'
-                            value={props.mealSummary.summary.fat}
+                            value={props.mealSummary.fat.value}
                             onChangeText={(f) => {
                                 props.updateFunction({
                                     ...props.mealSummary,
                                     summary: {
-                                        ...props.mealSummary.summary,
-                                        fat: f
+                                        ...props.mealSummary,
+                                        fat: {
+                                            ...props.mealSummary.fat,
+                                            value: f
+                                        }
                                     }
                                 })
                             }}

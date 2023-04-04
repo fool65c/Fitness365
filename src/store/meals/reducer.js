@@ -10,10 +10,10 @@ const initialState = {
 };
 
 export const emptyMeal = {
-    name: '',
+    date: '',
     servingSize: {
-        value: 0,
-        units: ''
+        value: 1,
+        units: 'each'
     },
     calories: {
         value: 0,
@@ -40,9 +40,11 @@ function mealReducer (state = initialState, action) {
             if ('id' in action.payload) {
                 state.meals[action.payload.id] = action.payload;
             } else {
-                action.payload.id = generateFoodID();
+                action.payload.id = generateMealID();
                 state.meals[action.payload.id] = action.payload;
             }
+
+            console.log(state.meals)
             
             return {
                 ...state

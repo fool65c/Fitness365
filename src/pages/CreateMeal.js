@@ -9,23 +9,14 @@ import LogSummary from '../components/LogSummay';
 import FoodDisplay from '../components/FoodDisplay';
 import MealEditDialog from '../dialog/MealEditDialog';
 import ServingsEditDialog from '../dialog/ServingsEditDialog';
+import { updateMeal } from '../store/meals/actions';
 import { emptyFood } from '../store/food/reducer';
+import { emptyMeal } from '../store/meals/reducer';
 
 const CreateMeal = (props) => {
-    const [ mealSummary, updateMealSummary ] = React.useState({
-        date: '',
-        servingSize: {
-            value: 1,
-            units: 'each'
-        },
-        summary: {
-            calories: 0,
-            protine: 0,
-            carbs: 0,
-            fat: 0
-        },
-        foods: {}
-    });
+    const editMode = props.route.params ? true : false;
+    const defaultMeal = editMode ? props.route.params : emptyMeal;
+    const [ mealSummary, updateMealSummary ] = React.useState(defaultMeal);
     const [ showAddDetailsDialog, updateShowAddDetailsDialog ] = React.useState(false)
     const [ showServingDialog, updateShowServingDialog ] = React.useState(false)
     const [ servingDialogFood, updateServingDialogFood ] = React.useState(emptyFood)
@@ -33,22 +24,35 @@ const CreateMeal = (props) => {
     const { foods } = useSelector(state => state.foodReducer);
     const [ selectedFoods, updateSelectedFoods ] = React.useState({})
 
+    const actionButtonText = editMode ? 'Update' : 'Create';
+
     React.useEffect(() => {
         updateMealSummary({
             ...mealSummary,
-            summary: Object.values(mealSummary.foods).reduce((summary, food) => {
-                return {
-                    calories: summary.calories + foods[food.id].calories.value * food.servings,
-                    protine: summary.protine + foods[food.id].protine.value * food.servings,
-                    carbs: summary.carbs + foods[food.id].carbs.value * food.servings,
-                    fat: summary.fat + foods[food.id].fat.value * food.servings,
-                }
-            }, {
-                calories: 0,
-                protine: 0,
-                carbs: 0,
-                fat: 0
-            })
+            calories: {
+                value: Object.values(mealSummary.foods).reduce((calories, food) => {
+                    return calories += foods[food.id].calories.value * food.servings
+                }, 0),
+                units: 'KCAL'
+            },
+            protine: {
+                value: Object.values(mealSummary.foods).reduce((protine, food) => {
+                    return protine += foods[food.id].protine.value * food.servings
+                }, 0),
+                units: 'G'
+            },
+            carbs: {
+                value: Object.values(mealSummary.foods).reduce((carbs, food) => {
+                    return carbs += foods[food.id].carbs.value * food.servings
+                }, 0),
+                units: 'G'
+            },
+            fat: {
+                value: Object.values(mealSummary.foods).reduce((fat, food) => {
+                    return fat += foods[food.id].fat.value * food.servings
+                }, 0),
+                units: 'G'
+            },
         })
     }, [mealSummary.foods])
     
@@ -87,7 +91,18 @@ const CreateMeal = (props) => {
                         margin: 5
                     }}
                 >
-                    <Text variant='headlineMedium'>Create Meal</Text>
+                    <Text variant='headlineMedium'>{actionButtonText} Meal</Text>
+                    <Button
+                        mode='outlined'
+                        icon='plus'
+                        onPress={() => {
+                            dispatch(updateMeal(mealSummary))
+                            goBack();
+                        }}
+                        disabled={mealSummary.date.length == 0}
+                    >
+                        {actionButtonText}
+                    </Button>
                     <Button
                         mode='outlined'
                         icon='close'
@@ -96,7 +111,7 @@ const CreateMeal = (props) => {
                         Close
                     </Button>
                 </View>
-                <LogSummary day={mealSummary}/>
+                <LogSummary day={mealSummary} showMealSummary={true}/>
                 <TextInput 
                     value={mealSummary.date}
                     style={{marginLeft: 10, marginRight: 10}}
@@ -133,7 +148,6 @@ const CreateMeal = (props) => {
                     }}
                     extraAction={<Button icon='plus' onPress={() => updateShowAddDetailsDialog(true)}>Edit Details</Button>}
                     selectIcon={<Button icon='plus'>Add Food</Button>}
-                    onTapClose={(food) => console.log(food, 'here?')}
                     isMulti={true}
                 />
                 <FlatList 
@@ -177,7 +191,8 @@ const CreateMeal = (props) => {
                                 servings: servings
                             }
                         }
-                    })
+                    });
+                    hideServingDialog()
                 }}
                 hideDialog={hideServingDialog}
             />

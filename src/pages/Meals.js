@@ -4,66 +4,21 @@ import { SafeAreaView, View, FlatList } from "react-native";
 import { TextInput, Button, Dialog, IconButton, Text } from "react-native-paper";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-import FoodDisplay from "../components/FoodDisplay";
-import { showFoodModal } from "../store/modal/actions";
-import { emptyFood } from "../store/food/reducer";
-import { logFood } from "../store/log/actions";
+import { emptyMeal } from "../store/meals/reducer";
+import { deleteMeal } from "../store/meals/actions";
+import { logMeal } from "../store/log/actions"
+import LogSummary from '../components/LogSummay';
+import FloatInput from "../components/FloatInput";
 
 const Meals = ({props}) => {
 
     const dispatch = useDispatch();
     const { meals } = useSelector(state => state.mealReducer);
-    const { foods } = useSelector(state => state.foodReducer);
     const [filterTerm, updateFilterTerm] = useState('');
     const [showAddDialog, updateShowAddDialog] = useState(false);
-    const [dialogFood, updateDialogFood] = useState(emptyFood);
-    const [foodServings, updateFoodServings] = useState(1);
-    const [foodAmount, updateFoodAmount] = useState(false);
-
-    const [logDate, updateLogDate] = useState(new Date());
-    const getLogDates = () => {
-        let now = new Date();
-        let options = []
-
-        // updateLogDate(now.toJSON().split('T')[0])
-        for (let i=0;i<=7;i++) {
-            now.setDate(now.getDate() - 1);
-            options.push(now.toJSON().split('T')[0]);
-        }
-
-        return options;
-    }
-
-
-    const hideDialog = () => {
-        updateShowAddDialog(false);
-    }
-
-    const openAddDialog = (food) => {
-        updateDialogFood(food);
-        updateFoodServings(1);
-        updateFoodAmount(food.servingSize.value);
-        updateShowAddDialog(true);
-    }
-
-    const openEditModal = (foodId) => {
-        dispatch(showFoodModal(foodId))
-    }
-
-    const displayValues = (value) => {
-        if (!value || value.length == 0) {
-            return '';
-        }
-        if (Number.isInteger(parseFloat(value))) {
-            return value.toString();
-         } else {
-            if (value.toString().split('.')[1].length > 2) {
-                return value.toFixed(2);
-            } else {
-                return value.toString();
-            }
-         }
-    }
+    const [dialogMeal, updateDialogMeal] = useState(emptyMeal);
+    const [dialogMealServings, updateDialogMealServings] = useState(1);
+    const [logDate, updateLogDate] = useState(props.logDate ? props.logDate : new Date());
 
     return (
         <>
@@ -84,96 +39,85 @@ const Meals = ({props}) => {
                     </Button>
                 </View>
                 <FlatList
-                    data={Object.values(foods).filter(food => {
+                    data={Object.values(meals).filter(meals => {
                         return filterTerm.length > 0 
-                                ? food.brandName.toLowerCase().includes(filterTerm.toLowerCase()) || food.name.toLowerCase().includes(filterTerm.toLowerCase())
+                                ? meals.date.toLowerCase().includes(filterTerm.toLowerCase())
                                 : true;
                     })}
                     renderItem={({item, index, separators}) => {
                         return (
-                            <FoodDisplay
-                                food={item}
-                                buttonAction={<IconButton icon='plus' onPress={() => openAddDialog(item)}/>}
-                                displayAction={() => openEditModal(item.id)}
-                            />
-                        )
-                        }}
-                />  
+                            <LogSummary 
+                                day={item}
+                                showMealSummary={true}
+                                button={
+                                    <IconButton 
+                                        icon='plus'
+                                        onPress={() => {
+                                            updateDialogMeal(item);
+                                            updateShowAddDialog(true);
+                                        }}
+                                    />      
+                                }
+                                action={() => {
+                                    props.navigation.navigate('CreateMeal', {...item})
+                                }}
+                            />  
+                        )}
+                    }
+                />
             </SafeAreaView>
-            <Dialog visible={showAddDialog} onDismiss={hideDialog}>
-                <Dialog.Title>Log {dialogFood.name}</Dialog.Title>
-                <Dialog.Content>
-                    <View flexDirection='row' >
-                        <Text variant='headlineSmall' style={{marginRight:5}}>Date</Text>
-                        <DateTimePicker 
-                            mode='date' 
-                            value={logDate}
-                            onChange={(event,date) => {
-                                updateLogDate(date)
-                            }}
-                            maximumDate={new Date()}
-                        />
-                    </View>
-                    <View flexDirection='row'>
-                        <TextInput 
-                            mode='outlined'
-                            inputmode='number'
-                            label='Servings'
-                            placeholder='Servings'
-                            value={displayValues(foodServings)}
-                            error={!parseFloat(foodServings)}
-                            onChangeText={(ss) => {
-                                updateFoodAmount(parseFloat(ss) * dialogFood.servingSize.value)
-                                updateFoodServings(ss)
-                            }}
-                            style={{
-                                marginLeft: 10,
-                                width: '45%'
-                            }}
-                        />
-                        <TextInput 
-                            mode='outlined'
-                            inputmode='number'
-                            label='Amount'
-                            placeholder='Amount'
-                            value={displayValues(foodAmount)}
-                            error={!parseFloat(foodAmount)}
-                            onChangeText={(a) => {
-                                updateFoodAmount(a);
-                                updateFoodServings(parseFloat(a) /  dialogFood.servingSize.value)
-                            }}
-                            style={{
-                                marginLeft: 10,
-                                width: '45%'
-                            }}
-                        />
-                    </View>
-                    <View flexDirection='row'>
-                        <Text variant='bodyMedium'>{parseFloat(foodServings) ? Math.ceil(dialogFood.calories.value * foodServings) : 0}</Text>
-                        <Text variant='bodyMedium'>{dialogFood.calories.units}</Text>
-                        <Text variant='bodyMedium'> P:</Text>
-                        <Text variant='bodyMedium'>{parseFloat(foodServings) ? Math.ceil(dialogFood.protine.value * foodServings) : 0}</Text>
-                        <Text variant='bodyMedium'>{dialogFood.protine.units}</Text>
-                        <Text variant='bodyMedium'> C:</Text>
-                        <Text variant='bodyMedium'>{parseFloat(foodServings) ? Math.ceil(dialogFood.carbs.value * foodServings) : 0}</Text>
-                        <Text variant='bodyMedium'>{dialogFood.carbs.units}</Text>
-                        <Text variant='bodyMedium'> F:</Text>
-                        <Text variant='bodyMedium'>{parseFloat(foodServings) ? Math.ceil(dialogFood.fat.value * foodServings) : 0}</Text>
-                        <Text variant='bodyMedium'>{dialogFood.fat.units}</Text>
-                    </View>
-                </Dialog.Content>
-                <Dialog.Actions>
+            <Dialog visible={showAddDialog} onDismiss={() => {updateShowAddDialog(false)}}>
+            <Dialog.Title>
+                {dialogMeal.date}
+                <IconButton 
+                    icon='delete'
+                    onPress={() => {
+                            dispatch(deleteMeal(dialogMeal.id))
+                            updateShowAddDialog(false);
+                        }}
+                />      
+            </Dialog.Title>
+            <Dialog.Content>
+                <View flexDirection='row' >
+                    <Text variant='headlineSmall' style={{marginRight:5}}>Date</Text>
+                    <DateTimePicker 
+                        mode='date' 
+                        value={logDate}
+                        onChange={(event,date) => {
+                            updateLogDate(date);
+                        }}
+                        maximumDate={props.maxLogDate ? props.maxLogDate : new Date()}
+                    />
+                </View>
+                <FloatInput 
+                    label='ServingSize'
+                    value={dialogMealServings}
+                    onChangeText={(servings) => {
+                        updateDialogMealServings(servings)
+                    }}
+                />
+                <View flexDirection='row'>
+                    <Text>{dialogMeal.servingSize.value} {dialogMeal.servingSize.units}</Text>
+                    <Text>{dialogMeal.calories * dialogMealServings}KCAL</Text>
+                    <Text>{dialogMeal.protine * dialogMealServings}P</Text>
+                    <Text>{dialogMeal.carbs * dialogMealServings}C</Text>
+                    <Text>{dialogMeal.fat * dialogMealServings}F</Text>
+                </View>
+            </Dialog.Content>
+            <Dialog.Actions>
                     <Button onPress={() => {
-                        dispatch(logFood(
+                        dispatch(logMeal(
                             logDate.toLocaleString().split(',')[0],
-                            dialogFood,
-                            parseFloat(foodServings)
-                            ));
-                        hideDialog();
-                    }}>Log</Button>
-                    <Button onPress={hideDialog}>Done</Button>
+                            dialogMeal,
+                            dialogMealServings
+                        ))
+                        updateShowAddDialog(false)}
+                    }>
+                        Log
+                    </Button>
+                    <Button onPress={() => {updateShowAddDialog(false)}}>Done</Button>
                 </Dialog.Actions>
-            </Dialog>      
+            </Dialog>
         </>
     )
 }
